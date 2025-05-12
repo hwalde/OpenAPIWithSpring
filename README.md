@@ -9,6 +9,18 @@ This project demonstrates the integration of OpenAPI with Spring Boot, showcasin
 - **Springdoc OpenAPI**: Integration for Swagger UI documentation
 - **Maven**: Build and dependency management tool
 
+## Related Frontend Project
+
+This backend project has a corresponding frontend implementation that demonstrates how to consume the API:
+
+- **Repository**: [Frontend4OpenAPIWithSpring](https://github.com/hwalde/Frontend4OpenAPIWithSpring)
+- **Features**:
+    - Demonstrates how to consume the OpenAPI-generated backend
+    - Shows how to integrate with the News API endpoints
+    - Provides a complete end-to-end example of an OpenAPI-based application
+
+The frontend project complements this backend by showing how clients can be built to interact with OpenAPI-defined services.
+
 ## Project Structure
 
 The project is structured around the OpenAPI-first approach, where the API is defined in an OpenAPI specification file, and server code is generated from it.
@@ -193,18 +205,6 @@ Key dependencies in the project:
 - Spring Boot Validation: For request validation
 - Jackson Databind Nullable: For handling nullable fields in the generated models
 - Springdoc OpenAPI: For Swagger UI integration
-
-## Related Frontend Project
-
-This backend project has a corresponding frontend implementation that demonstrates how to consume the API:
-
-- **Repository**: [Frontend4OpenAPIWithSpring](https://github.com/hwalde/Frontend4OpenAPIWithSpring)
-- **Features**:
-  - Demonstrates how to consume the OpenAPI-generated backend
-  - Shows how to integrate with the News API endpoints
-  - Provides a complete end-to-end example of an OpenAPI-based application
-
-The frontend project complements this backend by showing how clients can be built to interact with OpenAPI-defined services.
 
 ## Conclusion
 
