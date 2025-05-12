@@ -1,0 +1,283 @@
+openapi: 3.0.8
+info:
+  title: News API
+  version: 1.0.0
+  description: API for managing news articles.
+servers:
+  - url: http://localhost:3000/
+    description: Local development server
+
+components:
+  schemas:
+    NewsArticle:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Unique identifier for the news article.
+          readOnly: true
+        title:
+          type: string
+          description: Title of the news article.
+          example: "Breaking News: Technology Advancements"
+        content:
+          type: string
+          description: Full content of the news article.
+          example: "Lorem ipsum dolor sit amet, consectetur adipiscing elit..."
+        publication_date:
+          type: string
+          format: date-time
+          description: The date and time the article was published.
+          example: "2024-05-10T10:00:00Z"
+        author:
+          type: string
+          description: Author of the news article.
+          example: "John Doe"
+        category:
+          type: string
+          description: Category of the news article.
+          example: "Technology"
+          enum: # Enum für Nachrichtenkategorien hinzugefügt
+            - Politics
+            - Business
+            - Technology
+            - Sports
+            - Entertainment
+            - Science
+            - Health
+            - World
+            - Local
+            - Other
+        tags:
+          type: array
+          items:
+            type: string
+          description: Tags associated with the news article.
+          example: ["AI", "Innovation", "Future"]
+        source_url:
+          type: string
+          format: url
+          description: Optional URL to the original source of the news.
+          example: "http://example.com/news/original-article"
+      required:
+        - title
+        - content
+        - publication_date
+        - author
+        - category
+
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A human-readable error message.
+        code:
+          type: integer
+          format: int32
+          description: An internal error code.
+      required:
+        - message
+
+paths:
+  /news:
+    post:
+      summary: Create a new news article
+      tags:
+        - News
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewsArticle'
+      responses:
+        '201':
+          description: News article created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsArticle'
+        '400':
+          description: Bad Request - Invalid input provided.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      summary: Retrieve all news articles
+      tags:
+        - News
+      parameters:
+        - name: category
+          in: query
+          description: Filter news articles by category.
+          required: false
+          schema:
+            type: string
+            enum: # Enum auch hier für die Filterung hinzugefügt
+              - Politics
+              - Business
+              - Technology
+              - Sports
+              - Entertainment
+              - Science
+              - Health
+              - World
+              - Local
+              - Other
+        - name: publication_date
+          in: query
+          description: Filter news articles by publication date (YYYY-MM-DD).
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: limit
+          in: query
+          description: Maximum number of articles to return.
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 20
+        - name: offset
+          in: query
+          description: Number of articles to skip for pagination.
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+      responses:
+        '200':
+          description: A list of news articles.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NewsArticle'
+        '400':
+          description: Bad Request - Invalid query parameters.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /news/{id}:
+    get:
+      summary: Retrieve a specific news article by ID
+      tags:
+        - News
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: ID of the news article to retrieve.
+      responses:
+        '200':
+          description: Successfully retrieved the news article.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsArticle'
+        '404':
+          description: Not Found - News article with the specified ID not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Update an existing news article
+      tags:
+        - News
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: ID of the news article to update.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewsArticle' # Assuming the whole article object is sent for update
+      responses:
+        '200':
+          description: News article updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsArticle'
+        '400':
+          description: Bad Request - Invalid input provided.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found - News article with the specified ID not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Delete a news article
+      tags:
+        - News
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: ID of the news article to delete.
+      responses:
+        '204':
+          description: News article deleted successfully. No content.
+        '404':
+          description: Not Found - News article with the specified ID not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
