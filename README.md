@@ -194,6 +194,18 @@ Key dependencies in the project:
 - Jackson Databind Nullable: For handling nullable fields in the generated models
 - Springdoc OpenAPI: For Swagger UI integration
 
+## Related Frontend Project
+
+This backend project has a corresponding frontend implementation that demonstrates how to consume the API:
+
+- **Repository**: [Frontend4OpenAPIWithSpring](https://github.com/hwalde/Frontend4OpenAPIWithSpring)
+- **Features**:
+  - Demonstrates how to consume the OpenAPI-generated backend
+  - Shows how to integrate with the News API endpoints
+  - Provides a complete end-to-end example of an OpenAPI-based application
+
+The frontend project complements this backend by showing how clients can be built to interact with OpenAPI-defined services.
+
 ## Conclusion
 
-This project demonstrates a modern approach to API development using OpenAPI specifications and code generation. By defining the API first and generating the server stubs, you ensure consistency between your API documentation and implementation.
+This project demonstrates a modern approach to API development using OpenAPI specifications and code generation. By defining the API first and generating the server stubs, you ensure consistency between your API documentation and implementation. Combined with the related frontend project, it provides a complete example of an API-first development approach from specification to full-stack implementation.
